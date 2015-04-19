@@ -53,9 +53,15 @@
   (reduce * (map #(get-in coll %) axises)))
 
 (defn pailie
-  "穷举列表的排列"
+  "穷举列表的排列
+  (pailie [\a \b \c])
+  =>([\a \b \c] [\a \c \b] [\b \a \c] [\b \c \a] [\c \a \b] [\c \b \a])
+  [\a] [\b] [\c]
+  [\a \b] [\a \c] [\b \a] [\b \c] [\c \a] [\c \b]
+  [\a \b \c] [\a \c \b] [\b \a \c] [\b \c \a] [\c \a \b] [\c \b \a]"
   [coll]
-  (loop [m (for [ i coll] (vector i)) n (set coll)]
+  (loop [m (for [ i coll] (vector i))
+         n (set coll)]
     (if (empty? (difference n (first m)))
       m
       (recur
