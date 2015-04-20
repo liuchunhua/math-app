@@ -54,11 +54,11 @@
 
 (defn pailie
   "穷举列表的排列
-  (pailie [\a \b \c])
-  =>([\a \b \c] [\a \c \b] [\b \a \c] [\b \c \a] [\c \a \b] [\c \b \a])
-  [\a] [\b] [\c]
-  [\a \b] [\a \c] [\b \a] [\b \c] [\c \a] [\c \b]
-  [\a \b \c] [\a \c \b] [\b \a \c] [\b \c \a] [\c \a \b] [\c \b \a]"
+  (pailie [:a :b :c])
+  =>([:a :b :c] [:a :c :b] [:b :a :c] [:b :c :a] [:c :a :b] [:c :b :a])
+  [:a] [:b] [:c]
+  [:a :b] [:a :c] [:b :a] [:b :c] [:c :a] [:c :b]
+  [:a :b :c] [:a :c :b] [:b :a :c] [:b :c :a] [:c :a :b] [:c :b :a]"
   [coll]
   (loop [m (for [ i coll] (vector i))
          n (set coll)]
@@ -76,6 +76,19 @@
   [coll]
   (for [m coll] (map #(vector %1 %2) (range (count m)) m)))
 
+
+(defn pl
+  [[coll_x, coll]]
+  (let [n (set coll)]
+    [(reduce concat (for [i coll_x]
+                      (map #(conj i %) (difference n i)))) coll]))
+
+(defn pailieAnother
+  "列表排列的简化版本"
+  [coll]
+  (let [n (count coll)]
+    (first ((apply comp (repeat n pl)) [[[]] coll]))))
+
 (defn hanglieshi
   "计算行列式的值
   (def v3 [[1 2 -4] [-2 2 1] [-3 4 -2]])
@@ -83,7 +96,7 @@
   =>-14.0"
   [coll]
   (let [
-        p (pailie (range (count coll)))
+        p (pailieAnother (range (count coll)))
         m (map #(elementsMulti coll %) (elements p))
         n (map nixushu p)]
     (reduce + (map #(* %1 %2) m (for [i n] (Math/pow -1 i))))
