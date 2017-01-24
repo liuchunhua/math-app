@@ -1,4 +1,4 @@
-(ns math-app.core
+(ns math-app.math
   (:gen-class))
 
 ;;codes from <<Programming Clojure>> Stuart Halloway, Aaron Bedra
